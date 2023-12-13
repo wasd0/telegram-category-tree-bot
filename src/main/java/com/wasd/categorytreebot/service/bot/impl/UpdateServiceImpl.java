@@ -5,7 +5,7 @@ import com.wasd.categorytreebot.handler.MessageHandler;
 import com.wasd.categorytreebot.model.response.MessageResponse;
 import com.wasd.categorytreebot.model.response.impl.CommandNotFoundResponse;
 import com.wasd.categorytreebot.service.bot.UpdateService;
-import com.wasd.categorytreebot.util.mapper.MessageHandlerMapper;
+import com.wasd.categorytreebot.service.mapper.MessageHandlerMapper;
 import com.wasd.categorytreebot.util.telegram.SendMessageUtil;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;

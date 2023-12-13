@@ -3,14 +3,14 @@ package com.wasd.categorytreebot.handler.impl;
 import com.wasd.categorytreebot.handler.MessageHandler;
 import com.wasd.categorytreebot.model.response.MessageResponse;
 import com.wasd.categorytreebot.model.response.impl.TextMessageResponse;
-import com.wasd.categorytreebot.service.command.MappingService;
+import com.wasd.categorytreebot.service.command.HandlerMappingService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HelpHandler implements MessageHandler {
-    private final MappingService mappingService;
+    private final HandlerMappingService mappingService;
 
-    public HelpHandler(MappingService commandService) {
+    public HelpHandler(HandlerMappingService commandService) {
         this.mappingService = commandService;
     }
 

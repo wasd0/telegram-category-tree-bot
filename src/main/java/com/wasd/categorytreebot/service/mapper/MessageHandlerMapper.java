@@ -1,4 +1,4 @@
-package com.wasd.categorytreebot.util.mapper;
+package com.wasd.categorytreebot.service.mapper;
 
 import com.wasd.categorytreebot.handler.MessageHandler;
 

@@ -1,9 +1,9 @@
-package com.wasd.categorytreebot.util.mapper.impl;
+package com.wasd.categorytreebot.service.mapper.impl;
 
 import com.wasd.categorytreebot.exception.HandlerMappingExistsException;
 import com.wasd.categorytreebot.handler.MessageHandler;
-import com.wasd.categorytreebot.service.command.MappingService;
-import com.wasd.categorytreebot.util.mapper.MessageHandlerMapper;
+import com.wasd.categorytreebot.service.command.HandlerMappingService;
+import com.wasd.categorytreebot.service.mapper.MessageHandlerMapper;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +13,11 @@ import java.util.Map;
 
 @Service
 public class MessageHandlerMapperImpl implements MessageHandlerMapper {
-    private final MappingService commandService;
+    private final HandlerMappingService commandService;
     private final List<MessageHandler> handlers;
     private Map<String, MessageHandler> handlerMap;
 
-    public MessageHandlerMapperImpl(MappingService commandService, List<MessageHandler> handlers) {
+    public MessageHandlerMapperImpl(HandlerMappingService commandService, List<MessageHandler> handlers) {
         this.commandService = commandService;
         this.handlers = handlers;
     }
