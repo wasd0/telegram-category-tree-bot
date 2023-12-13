@@ -1,6 +1,6 @@
 package com.wasd.categorytreebot.config;
 
-import com.wasd.categorytreebot.bot.CategoryBot;
+import com.wasd.categorytreebot.bot.TelegramBotImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,12 +20,12 @@ public class TelegramBotConfig {
     @Bean
     public TelegramBotsApi telegramBotsApi() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-        telegramBotsApi.registerBot(categoryBot());
+        telegramBotsApi.registerBot(telegramBot());
         return telegramBotsApi;
     }
     
     @Bean
-    public CategoryBot categoryBot() {
-        return new CategoryBot(categoryBotToken, categoryBotUsername);
+    public TelegramBotImpl telegramBot() {
+        return new TelegramBotImpl(categoryBotToken, categoryBotUsername);
     }
 }
