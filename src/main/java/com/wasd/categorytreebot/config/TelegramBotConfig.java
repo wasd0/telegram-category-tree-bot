@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 @Configuration
-@PropertySource("classpath:properties/bot.properties")
+@PropertySource("classpath:properties/categoryBot.properties")
 public class TelegramBotConfig {
     @Value("${categoryBot.username}")
     private String categoryBotUsername;
