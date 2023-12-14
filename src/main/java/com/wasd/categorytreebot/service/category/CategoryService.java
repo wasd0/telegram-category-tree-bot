@@ -8,4 +8,5 @@ import java.util.List;
 public interface CategoryService {
     List<CategoryResponse> findAll();
     CategoryResponse create(CategoryRequest request);
+    void remove(String name);
 }

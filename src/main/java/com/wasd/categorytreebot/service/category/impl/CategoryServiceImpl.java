@@ -9,6 +9,7 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
+    @Transactional
     @Override
     public List<CategoryResponse> findAll() {
         return categoryRepository.findAll().stream()
@@ -25,6 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public CategoryResponse create(CategoryRequest request) {
         if (categoryRepository.findByName(request.name()).isPresent()) {
@@ -38,13 +41,17 @@ public class CategoryServiceImpl implements CategoryService {
         return mapCategoryToResponse(category);
     }
 
+    @Transactional
+    @Override
+    public void remove(String name) {
+        Category category = findCategory(name);
+        categoryRepository.delete(category);
+    }
+
     private Category mapRequestToCategory(CategoryRequest request) {
         Category parent = null;
         if (request.parentName() != null && !request.parentName().isBlank()) {
-            parent =
-                    categoryRepository.findByName(request.parentName()).orElseThrow(()
-                            -> new EntityNotFoundException(String.format("Parent category with " 
-                            + "name '%s' not found", request.parentName())));
+            parent = findCategory(request.parentName());
         }
 
         Category category = new Category();
@@ -52,6 +59,11 @@ public class CategoryServiceImpl implements CategoryService {
         category.setParent(parent);
 
         return category;
+    }
+
+    private Category findCategory(String name) {
+        return categoryRepository.findByName(name).orElseThrow(()
+                -> new EntityNotFoundException(String.format("Parent category with name '%s' not found", name)));
     }
 
     private CategoryResponse mapCategoryToResponse(Category category) {

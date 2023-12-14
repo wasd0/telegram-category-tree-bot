@@ -38,7 +38,7 @@ public class AddCategoryCommand implements Command {
     public String getDescription() {
         return """
                 Add new root or child element.
-                Example:
+                Parameters:
                 <name> - add new root element
                 or
                 <parentName> <name> - add element to parent
