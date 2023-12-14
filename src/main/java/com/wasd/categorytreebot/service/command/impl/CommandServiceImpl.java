@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class CommandServiceImpl implements CommandService {
@@ -30,8 +31,8 @@ public class CommandServiceImpl implements CommandService {
     }
 
     @Override
-    public Command getByMapping(String mapping) {
-        return commandMap.get(mapping);
+    public Optional<Command> getByMapping(String mapping) {
+        return Optional.ofNullable(commandMap.get(mapping));
     }
 
     @PostConstruct

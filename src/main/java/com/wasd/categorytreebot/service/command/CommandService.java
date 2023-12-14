@@ -2,6 +2,8 @@ package com.wasd.categorytreebot.service.command;
 
 import com.wasd.categorytreebot.command.Command;
 
+import java.util.Optional;
+
 public interface CommandService {
-    Command getByMapping(String mapping);
+    Optional<Command> getByMapping(String mapping);
 }

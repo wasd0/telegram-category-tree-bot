@@ -1,8 +1,8 @@
-package com.wasd.categorytreebot.model.response.impl;
+package com.wasd.categorytreebot.model.message.impl;
 
-import com.wasd.categorytreebot.model.response.MessageResponse;
+import com.wasd.categorytreebot.model.message.MessageResponse;
 
-public record CommandNotFoundResponse() implements MessageResponse {
+public class CommandNotFoundResponse implements MessageResponse {
     @Override
     public String getMessage() {
         return """

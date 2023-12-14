@@ -1,4 +1,4 @@
-package com.wasd.categorytreebot.model.response;
+package com.wasd.categorytreebot.model.message;
 
 public interface MessageResponse {
     String getMessage();
