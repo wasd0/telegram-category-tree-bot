@@ -3,10 +3,14 @@ package com.wasd.categorytreebot.command.impl;
 import com.wasd.categorytreebot.command.Command;
 import com.wasd.categorytreebot.model.command.CommandData;
 import com.wasd.categorytreebot.model.response.MessageResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AddCategoryCommand implements Command {
+    @Value("${command.addCategory.mapping}")
+    private String mapping; 
+    
     @Override
     public MessageResponse execute(CommandData data) {
         return switch (data.arguments().length) {
@@ -18,7 +22,7 @@ public class AddCategoryCommand implements Command {
 
     @Override
     public String getMapping() {
-        return "/addElement";
+        return mapping;
     }
 
     @Override
