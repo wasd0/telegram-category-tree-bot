@@ -38,7 +38,7 @@ public class CommandServiceImpl implements CommandService {
     @PostConstruct
     private void init() {
         commandInfoService.addCommandsInfo(commandMap.values().stream()
-                .map(command -> String.format("%s - %s\n", command.getMapping(), command.getDescription()))
+                .map(command -> String.format("\n%s\n%s\n\n", command.getMapping(), command.getDescription()))
                 .toList());
     }
 }

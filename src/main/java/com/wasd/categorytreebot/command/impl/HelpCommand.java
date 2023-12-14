@@ -5,6 +5,7 @@ import com.wasd.categorytreebot.model.command.CommandData;
 import com.wasd.categorytreebot.model.message.MessageResponse;
 import com.wasd.categorytreebot.service.command.CommandsInfoService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +21,10 @@ public class HelpCommand implements Command {
     public MessageResponse execute(CommandData data) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Available commands:\n");
+        stringBuilder.append(Strings.repeat("_", 40));
 
-        commandsInfoService.getInfo().forEach(mapping -> stringBuilder.append(String.format("%s\n", mapping)));
+        commandsInfoService.getInfo().forEach(stringBuilder::append);
+        stringBuilder.append(Strings.repeat("_", 40));
 
         return stringBuilder::toString;
     }

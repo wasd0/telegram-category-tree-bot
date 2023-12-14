@@ -5,6 +5,7 @@ import com.wasd.categorytreebot.model.category.CategoryResponse;
 import com.wasd.categorytreebot.model.command.CommandData;
 import com.wasd.categorytreebot.model.message.MessageResponse;
 import com.wasd.categorytreebot.service.category.CategoryService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
 @Component
 public class FindCategoryCommand implements Command {
     private final CategoryService categoryService;
+    @Value("${command.findCategory.mapping}")
+    private String mapping;
 
     public FindCategoryCommand(CategoryService categoryService) {
         this.categoryService = categoryService;
@@ -24,7 +27,7 @@ public class FindCategoryCommand implements Command {
 
     @Override
     public String getMapping() {
-        return "/viewTree";
+        return mapping;
     }
 
     @Override

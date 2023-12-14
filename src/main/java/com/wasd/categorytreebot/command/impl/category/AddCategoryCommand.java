@@ -39,8 +39,9 @@ public class AddCategoryCommand implements Command {
         return """
                 Add new root or child element.
                 Example:
-                /addElement <name> - add new root element
-                /addElement <parentName> <name> - add element to parent
+                <name> - add new root element
+                or
+                <parentName> <name> - add element to parent
                 """;
     }
     
