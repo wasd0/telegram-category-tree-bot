@@ -56,4 +56,11 @@ class AddCategoryCommandTest {
         CommandResponse response = addCategoryCommand.execute(data);
         Assertions.assertEquals(response.status(), OperationStatus.SUCCESS);
     }
+    
+    @Test
+    void add_withoutArguments_fail() {
+        CommandData data = new CommandData("");
+        CommandResponse response = addCategoryCommand.execute(data);
+        Assertions.assertEquals(response.status(), OperationStatus.FAIL);
+    }
 }
