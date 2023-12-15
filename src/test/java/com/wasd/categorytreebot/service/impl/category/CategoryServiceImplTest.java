@@ -1,4 +1,4 @@
-package com.wasd.categorytreebot.service.category;
+package com.wasd.categorytreebot.service.impl.category;
 
 import com.wasd.categorytreebot.model.category.CategoryRequest;
 import com.wasd.categorytreebot.model.persistence.category.Category;
