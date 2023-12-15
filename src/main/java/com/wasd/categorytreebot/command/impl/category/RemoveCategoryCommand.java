@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RemoveElementCommand implements Command {
+public class RemoveCategoryCommand implements Command {
     private final CategoryService categoryService;
 
     @Value("${command.removeCategory.mapping}")
