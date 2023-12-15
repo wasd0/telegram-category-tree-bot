@@ -4,6 +4,7 @@ import com.wasd.categorytreebot.command.Command;
 import com.wasd.categorytreebot.model.command.CommandData;
 import com.wasd.categorytreebot.model.message.MessageResponse;
 import com.wasd.categorytreebot.service.category.CategoryService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,12 @@ public class RemoveElementCommand implements Command {
     @Override
     public MessageResponse execute(CommandData data) {
         if (data.arguments().length == 1) {
-            categoryService.remove(data.arguments()[0]);
+            try {
+                String categoryName = data.arguments()[0];
+                categoryService.remove(categoryName);
+            } catch (EntityNotFoundException e) {
+                return e::getMessage;
+            }
             return () -> String.format("Category '%s' removed", data.arguments()[0]);
         } else {
             return () -> "Category not found. Add category name to command for remove";

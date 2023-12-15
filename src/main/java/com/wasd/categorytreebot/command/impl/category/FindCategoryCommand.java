@@ -29,14 +29,16 @@ public class FindCategoryCommand implements Command {
             for (CategoryResponse root : roots) {
                 stringBuilder.append("\n");
                 stringBuilder.append(root.name());
-                
-                for (String child : root.children()) {
-                    stringBuilder.append(String.format(" -> %s ", child));
+
+                if (root.children() != null && !root.children().isEmpty()) {
+                    for (String child : root.children()) {
+                        stringBuilder.append(String.format(" -> %s ", child));
+                    }
                 }
-                
+
                 stringBuilder.append("\n");
             }
-            
+
             return stringBuilder::toString;
         }
 

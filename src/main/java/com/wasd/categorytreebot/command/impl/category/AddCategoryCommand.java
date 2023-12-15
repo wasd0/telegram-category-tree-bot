@@ -2,9 +2,11 @@ package com.wasd.categorytreebot.command.impl.category;
 
 import com.wasd.categorytreebot.command.Command;
 import com.wasd.categorytreebot.model.category.CategoryRequest;
+import com.wasd.categorytreebot.model.category.CategoryResponse;
 import com.wasd.categorytreebot.model.command.CommandData;
 import com.wasd.categorytreebot.model.message.MessageResponse;
 import com.wasd.categorytreebot.service.category.CategoryService;
+import jakarta.persistence.PersistenceException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -44,12 +46,22 @@ public class AddCategoryCommand implements Command {
                 <parentName> <name> - add element to parent
                 """;
     }
-    
+
     private MessageResponse addRootElement(String name) {
-        return () -> categoryService.create(new CategoryRequest(name, null)).name();
+        try {
+            CategoryResponse categoryResponse = categoryService.create(new CategoryRequest(name, null));
+            return () -> String.format("Added new category '%s'", categoryResponse.name());
+        } catch (PersistenceException e) {
+            return e::getMessage;
+        }
     }
 
     private MessageResponse addChildElement(String parentName, String name) {
-        return () -> categoryService.create(new CategoryRequest(name, parentName)).name();
+        try {
+            CategoryResponse categoryResponse = categoryService.create(new CategoryRequest(name, parentName));
+            return () -> String.format("Added new category '%s'", categoryResponse.name());
+        } catch (PersistenceException e) {
+            return e::getMessage;
+        }
     }
 }
