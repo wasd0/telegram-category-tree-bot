@@ -5,25 +5,44 @@ import com.wasd.categorytreebot.model.category.CategoryResponse;
 import com.wasd.categorytreebot.model.command.CommandData;
 import com.wasd.categorytreebot.model.message.MessageResponse;
 import com.wasd.categorytreebot.service.category.CategoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class FindCategoryCommand implements Command {
     private final CategoryService categoryService;
     @Value("${command.findCategory.mapping}")
     private String mapping;
 
-    public FindCategoryCommand(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
-
     @Override
     public MessageResponse execute(CommandData data) {
-        return findAllCategories();
+        List<CategoryResponse> roots = categoryService.findAllRoots();
+
+        if (!roots.isEmpty()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("Categories:\n");
+
+            for (CategoryResponse root : roots) {
+                stringBuilder.append("\n");
+                stringBuilder.append(root.name());
+                
+                for (String child : root.children()) {
+                    stringBuilder.append(String.format(" -> %s ", child));
+                }
+                
+                stringBuilder.append("\n");
+            }
+            
+            return stringBuilder::toString;
+        }
+
+        return () -> "Categories not found";
     }
+
 
     @Override
     public String getMapping() {
@@ -33,21 +52,5 @@ public class FindCategoryCommand implements Command {
     @Override
     public String getDescription() {
         return "Shows all categories in a structured way ";
-    }
-
-    private MessageResponse findAllCategories() {
-        List<CategoryResponse> responses = categoryService.findAll();
-        if (!responses.isEmpty()) {
-            StringBuilder categories = new StringBuilder();
-            for (CategoryResponse response : responses) {
-                categories.append("> ");
-                categories.append(response.name());
-            }
-
-            final String result = categories.toString();
-            return () -> result;
-        } else {
-            return () -> "No categories for display";
-        }
     }
 }

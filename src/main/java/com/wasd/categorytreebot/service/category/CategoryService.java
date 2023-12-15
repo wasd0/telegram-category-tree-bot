@@ -6,7 +6,7 @@ import com.wasd.categorytreebot.model.category.CategoryResponse;
 import java.util.List;
 
 public interface CategoryService {
-    List<CategoryResponse> findAll();
+    List<CategoryResponse> findAllRoots();
     CategoryResponse create(CategoryRequest request);
     void remove(String name);
 }

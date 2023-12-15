@@ -11,7 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,10 +22,10 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
-    @Transactional
     @Override
-    public List<CategoryResponse> findAll() {
-        return categoryRepository.findAll().stream()
+    @Transactional
+    public List<CategoryResponse> findAllRoots() {
+        return categoryRepository.findAllByParentIsNull().stream()
                 .map(this::mapCategoryToResponse)
                 .collect(Collectors.toList());
     }
@@ -44,14 +47,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public void remove(String name) {
-        Category category = findCategory(name);
+        Category category = tryFindByName(name);
         categoryRepository.delete(category);
     }
 
     private Category mapRequestToCategory(CategoryRequest request) {
         Category parent = null;
         if (request.parentName() != null && !request.parentName().isBlank()) {
-            parent = findCategory(request.parentName());
+            parent = tryFindByName(request.parentName());
         }
 
         Category category = new Category();
@@ -61,13 +64,33 @@ public class CategoryServiceImpl implements CategoryService {
         return category;
     }
 
-    private Category findCategory(String name) {
+    private Category tryFindByName(String name) {
         return categoryRepository.findByName(name).orElseThrow(()
                 -> new EntityNotFoundException(String.format("Parent category with name '%s' not found", name)));
     }
 
     private CategoryResponse mapCategoryToResponse(Category category) {
         String parentName = category.getParent() != null ? category.getParent().getName() : null;
-        return new CategoryResponse(category.getName(), parentName);
+        boolean hasChildren = hasChildren(category);
+        List<String> children = hasChildren ? new ArrayList<>() : null;
+
+        if (hasChildren) {
+            Queue<Category> categoryQueue = new ArrayDeque<>(category.getChildren());
+
+            while (!categoryQueue.isEmpty()) {
+                Category child = categoryQueue.poll();
+                children.add(child.getName());
+
+                if (hasChildren(child)) {
+                    categoryQueue.addAll(child.getChildren());
+                }
+            }
+        }
+
+        return new CategoryResponse(category.getName(), parentName, children);
+    }
+
+    private boolean hasChildren(Category category) {
+        return category.getChildren() != null && !category.getChildren().isEmpty();
     }
 }
