@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional
     @Override
-    public CategoryResponse create(CategoryRequest request) {
+    public CategoryResponse create(CategoryRequest request) throws EntityExistsException, EntityNotFoundException {
         if (categoryRepository.findByName(request.name()).isPresent()) {
             throw new EntityExistsException(String.format("Category with name '%s' already exists.",
                     request.name()));
@@ -46,12 +46,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional
     @Override
-    public void remove(String name) {
+    public void remove(String name) throws EntityNotFoundException {
         Category category = tryFindByName(name);
         categoryRepository.delete(category);
     }
 
-    private Category mapRequestToCategory(CategoryRequest request) {
+    private Category mapRequestToCategory(CategoryRequest request) throws EntityNotFoundException {
         Category parent = null;
         if (request.parentName() != null && !request.parentName().isBlank()) {
             parent = tryFindByName(request.parentName());
@@ -64,9 +64,9 @@ public class CategoryServiceImpl implements CategoryService {
         return category;
     }
 
-    private Category tryFindByName(String name) {
+    private Category tryFindByName(String name) throws EntityNotFoundException {
         return categoryRepository.findByName(name).orElseThrow(()
-                -> new EntityNotFoundException(String.format("Parent category with name '%s' not found", name)));
+                -> new EntityNotFoundException(String.format("Category with name '%s' not found", name)));
     }
 
     private CategoryResponse mapCategoryToResponse(Category category) {
