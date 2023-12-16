@@ -21,14 +21,10 @@ public class HelpCommand implements Command {
 
     @Override
     public CommandResponse execute(CommandData data) {
-        if (data.arguments().length != 1) {
-            return new CommandResponse(OperationStatus.FAIL, "Please enter 1 argument for this command.");
-        }
-        
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Available commands:\n");
         stringBuilder.append(Strings.repeat("_", 40));
-        
+
         commandsInfoService.getUserCommandsInfo(data.userId()).forEach(stringBuilder::append);
         stringBuilder.append(Strings.repeat("_", 40));
 
