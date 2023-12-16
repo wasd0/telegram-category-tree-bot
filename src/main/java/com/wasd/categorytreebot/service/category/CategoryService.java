@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface CategoryService {
     List<CategoryResponse> findAllRoots();
-    CategoryResponse create(CategoryRequest request) throws EntityExistsException;
+    CategoryResponse create(CategoryRequest request) throws EntityExistsException, EntityNotFoundException;
     void remove(String name) throws EntityNotFoundException;
 }

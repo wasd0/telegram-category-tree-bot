@@ -1,10 +1,10 @@
 package com.wasd.categorytreebot.command;
 
 import com.wasd.categorytreebot.model.command.CommandData;
-import com.wasd.categorytreebot.model.message.MessageResponse;
+import com.wasd.categorytreebot.model.command.CommandResponse;
 
 public interface Command {
-    MessageResponse execute(CommandData data);
+    CommandResponse execute(CommandData data);
     String getMapping();
     String getDescription();
 }

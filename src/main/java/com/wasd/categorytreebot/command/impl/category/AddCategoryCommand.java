@@ -4,9 +4,11 @@ import com.wasd.categorytreebot.command.Command;
 import com.wasd.categorytreebot.model.category.CategoryRequest;
 import com.wasd.categorytreebot.model.category.CategoryResponse;
 import com.wasd.categorytreebot.model.command.CommandData;
-import com.wasd.categorytreebot.model.message.MessageResponse;
+import com.wasd.categorytreebot.model.command.CommandResponse;
+import com.wasd.categorytreebot.model.command.OperationStatus;
 import com.wasd.categorytreebot.service.category.CategoryService;
-import jakarta.persistence.PersistenceException;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +24,12 @@ public class AddCategoryCommand implements Command {
     }
 
     @Override
-    public MessageResponse execute(CommandData data) {
+    public CommandResponse execute(CommandData data) {
         return switch (data.arguments().length) {
             case 1 -> addRootElement(data.arguments()[0]);
             case 2 -> addChildElement(data.arguments()[0], data.arguments()[1]);
             default ->
-                    () -> "Cannot add category with this arguments. Arguments count: " + data.arguments().length;
+                    new CommandResponse(OperationStatus.FAIL, "Cannot add category with this arguments. Arguments count: " + data.arguments().length);
         };
     }
 
@@ -47,21 +49,21 @@ public class AddCategoryCommand implements Command {
                 """;
     }
 
-    private MessageResponse addRootElement(String name) {
+    private CommandResponse addRootElement(String name) {
         try {
             CategoryResponse categoryResponse = categoryService.create(new CategoryRequest(name, null));
-            return () -> String.format("Added new category '%s'", categoryResponse.name());
-        } catch (PersistenceException e) {
-            return e::getMessage;
+            return new CommandResponse(OperationStatus.SUCCESS, String.format("Added new category '%s'", categoryResponse.name()));
+        } catch (EntityNotFoundException | EntityExistsException e) {
+            return new CommandResponse(OperationStatus.FAIL, e.getMessage());
         }
     }
 
-    private MessageResponse addChildElement(String parentName, String name) {
+    private CommandResponse addChildElement(String parentName, String name) {
         try {
             CategoryResponse categoryResponse = categoryService.create(new CategoryRequest(name, parentName));
-            return () -> String.format("Added new category '%s'", categoryResponse.name());
-        } catch (PersistenceException e) {
-            return e::getMessage;
+            return new CommandResponse(OperationStatus.SUCCESS, String.format("Added new category '%s'", categoryResponse.name()));
+        } catch (EntityNotFoundException | EntityExistsException e) {
+            return new CommandResponse(OperationStatus.FAIL, e.getMessage());
         }
     }
 }

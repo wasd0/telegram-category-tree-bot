@@ -2,7 +2,8 @@ package com.wasd.categorytreebot.command.impl;
 
 import com.wasd.categorytreebot.command.Command;
 import com.wasd.categorytreebot.model.command.CommandData;
-import com.wasd.categorytreebot.model.message.MessageResponse;
+import com.wasd.categorytreebot.model.command.CommandResponse;
+import com.wasd.categorytreebot.model.command.OperationStatus;
 import com.wasd.categorytreebot.service.command.CommandsInfoService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
@@ -13,12 +14,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class HelpCommand implements Command {
     private final CommandsInfoService commandsInfoService;
-    
+
     @Value("${command.help.mapping}")
     private String mapping;
 
     @Override
-    public MessageResponse execute(CommandData data) {
+    public CommandResponse execute(CommandData data) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Available commands:\n");
         stringBuilder.append(Strings.repeat("_", 40));
@@ -26,7 +27,7 @@ public class HelpCommand implements Command {
         commandsInfoService.getInfo().forEach(stringBuilder::append);
         stringBuilder.append(Strings.repeat("_", 40));
 
-        return stringBuilder::toString;
+        return new CommandResponse(OperationStatus.SUCCESS, stringBuilder.toString());
     }
 
     @Override

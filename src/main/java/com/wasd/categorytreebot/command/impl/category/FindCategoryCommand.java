@@ -3,7 +3,8 @@ package com.wasd.categorytreebot.command.impl.category;
 import com.wasd.categorytreebot.command.Command;
 import com.wasd.categorytreebot.model.category.CategoryResponse;
 import com.wasd.categorytreebot.model.command.CommandData;
-import com.wasd.categorytreebot.model.message.MessageResponse;
+import com.wasd.categorytreebot.model.command.CommandResponse;
+import com.wasd.categorytreebot.model.command.OperationStatus;
 import com.wasd.categorytreebot.service.category.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,7 @@ public class FindCategoryCommand implements Command {
     private String mapping;
 
     @Override
-    public MessageResponse execute(CommandData data) {
+    public CommandResponse execute(CommandData data) {
         List<CategoryResponse> roots = categoryService.findAllRoots();
 
         if (!roots.isEmpty()) {
@@ -39,10 +40,10 @@ public class FindCategoryCommand implements Command {
                 stringBuilder.append("\n");
             }
 
-            return stringBuilder::toString;
+            return new CommandResponse(OperationStatus.SUCCESS, stringBuilder.toString());
         }
 
-        return () -> "Categories not found";
+        return new CommandResponse(OperationStatus.FAIL, "Categories not found");
     }
 
 
