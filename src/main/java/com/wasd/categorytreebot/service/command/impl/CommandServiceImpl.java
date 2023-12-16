@@ -61,15 +61,17 @@ public class CommandServiceImpl implements CommandService {
     }
 
     private MessageResponse tryExecuteCommand(long userId, Command command, CommandData commandData) {
+        Role userRole;
+        
         try {
-            Role userRole = userRoleService.getByUserId(userId);
-            Role commandRole = command.getAccessRole();
-            boolean userHasAccess = commandRole == Role.USER || userRole.getValue() >= commandRole.getValue();
-            return userHasAccess ? command.execute(commandData) : new ForbiddenCommandResponse();
-            
+             userRole = userRoleService.getByUserId(userId);
         } catch (EntityNotFoundException e) {
-            return new ForbiddenCommandResponse();
+            userRole = Role.USER;
         }
+
+        Role commandRole = command.getAccessRole();
+        boolean userHasAccess = commandRole == Role.USER || userRole.getValue() >= commandRole.getValue();
+        return userHasAccess ? command.execute(commandData) : new ForbiddenCommandResponse();
     }
 
     @PostConstruct
