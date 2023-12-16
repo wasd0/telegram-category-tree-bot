@@ -24,7 +24,7 @@ public class UpdateServiceImpl implements UpdateService {
         }
 
         String text = update.getMessage().getText();
-        MessageResponse response = commandService.execute(text);
+        MessageResponse response = commandService.execute(text, update.getMessage().getUserShared().getUserId());
         
         sendResponse(update, response);
     }

@@ -5,6 +5,7 @@ import com.wasd.categorytreebot.model.category.CategoryResponse;
 import com.wasd.categorytreebot.model.command.CommandData;
 import com.wasd.categorytreebot.model.command.CommandResponse;
 import com.wasd.categorytreebot.model.command.OperationStatus;
+import com.wasd.categorytreebot.model.role.Role;
 import com.wasd.categorytreebot.service.category.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,5 +56,10 @@ public class FindCategoryCommand implements Command {
     @Override
     public String getDescription() {
         return "Shows all categories in a structured way ";
+    }
+
+    @Override
+    public Role getAccessRole() {
+        return Role.USER;
     }
 }
