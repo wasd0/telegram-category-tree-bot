@@ -1,9 +1,8 @@
-package com.wasd.categorytreebot.service.impl.category;
+package com.wasd.categorytreebot.service.category.impl;
 
 import com.wasd.categorytreebot.model.category.CategoryRequest;
 import com.wasd.categorytreebot.model.persistence.category.Category;
 import com.wasd.categorytreebot.repository.CategoryRepository;
-import com.wasd.categorytreebot.service.category.impl.CategoryServiceImpl;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
