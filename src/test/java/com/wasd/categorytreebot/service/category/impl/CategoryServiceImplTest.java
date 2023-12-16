@@ -64,7 +64,7 @@ class CategoryServiceImplTest {
     }
 
     @Test
-    void remove_ifNotExists_removeF() {
+    void remove_ifNotExists_throwsEntityNotFoundException() {
         when(categoryRepository.findByName("new")).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> categoryService.remove("new"));
     }
