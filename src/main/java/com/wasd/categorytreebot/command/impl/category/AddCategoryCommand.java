@@ -25,12 +25,13 @@ public class AddCategoryCommand implements Command {
     }
 
     @Override
-    public CommandResponse execute(CommandData data) {
+    public CommandResponse<?> execute(CommandData data) {
         return switch (data.arguments().length) {
             case 1 -> addRootElement(data.arguments()[0]);
             case 2 -> addChildElement(data.arguments()[0], data.arguments()[1]);
-            default ->
-                    new CommandResponse(OperationStatus.FAIL, "Cannot add category with this arguments. Arguments count: " + data.arguments().length);
+            default -> new CommandResponse<>(OperationStatus.FAIL, "Cannot add category with this arguments" +
+                    ". " +
+                    "Arguments count: " + data.arguments().length);
         };
     }
 
@@ -55,21 +56,23 @@ public class AddCategoryCommand implements Command {
         return Role.ADMIN;
     }
 
-    private CommandResponse addRootElement(String name) {
+    private CommandResponse<?> addRootElement(String name) {
         try {
             CategoryResponse categoryResponse = categoryService.create(new CategoryRequest(name, null));
-            return new CommandResponse(OperationStatus.SUCCESS, String.format("Added new category '%s'", categoryResponse.name()));
+            return new CommandResponse<>(OperationStatus.SUCCESS, String.format("Added new category '%s'",
+                    categoryResponse.name()));
         } catch (EntityNotFoundException | EntityExistsException e) {
-            return new CommandResponse(OperationStatus.FAIL, e.getMessage());
+            return new CommandResponse<>(OperationStatus.FAIL, e.getMessage());
         }
     }
 
-    private CommandResponse addChildElement(String parentName, String name) {
+    private CommandResponse<?> addChildElement(String parentName, String name) {
         try {
             CategoryResponse categoryResponse = categoryService.create(new CategoryRequest(name, parentName));
-            return new CommandResponse(OperationStatus.SUCCESS, String.format("Added new category '%s'", categoryResponse.name()));
+            return new CommandResponse<>(OperationStatus.SUCCESS, String.format("Added new category '%s'",
+                    categoryResponse.name()));
         } catch (EntityNotFoundException | EntityExistsException e) {
-            return new CommandResponse(OperationStatus.FAIL, e.getMessage());
+            return new CommandResponse<>(OperationStatus.FAIL, e.getMessage());
         }
     }
 }

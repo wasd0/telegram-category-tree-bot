@@ -21,7 +21,7 @@ public class FindCategoryCommand implements Command {
     private String mapping;
 
     @Override
-    public CommandResponse execute(CommandData data) {
+    public CommandResponse<?> execute(CommandData data) {
         List<CategoryResponse> roots = categoryService.findAllRoots();
 
         if (!roots.isEmpty()) {
@@ -41,10 +41,10 @@ public class FindCategoryCommand implements Command {
                 stringBuilder.append("\n");
             }
 
-            return new CommandResponse(OperationStatus.SUCCESS, stringBuilder.toString());
+            return new CommandResponse<>(OperationStatus.SUCCESS, stringBuilder.toString());
         }
 
-        return new CommandResponse(OperationStatus.FAIL, "Categories not found");
+        return new CommandResponse<>(OperationStatus.FAIL, "Categories not found");
     }
 
 

@@ -4,9 +4,9 @@ import com.wasd.categorytreebot.command.Command;
 import com.wasd.categorytreebot.model.command.CommandData;
 import com.wasd.categorytreebot.model.command.CommandResponse;
 import com.wasd.categorytreebot.model.command.OperationStatus;
-import com.wasd.categorytreebot.model.message.MessageResponse;
-import com.wasd.categorytreebot.model.message.impl.CommandNotFoundResponse;
-import com.wasd.categorytreebot.model.message.impl.ForbiddenCommandResponse;
+import com.wasd.categorytreebot.model.response.MessageResponse;
+import com.wasd.categorytreebot.model.response.impl.CommandNotFoundResponse;
+import com.wasd.categorytreebot.model.response.impl.ForbiddenCommandResponse;
 import com.wasd.categorytreebot.model.role.Role;
 import com.wasd.categorytreebot.service.user.impl.UserRoleServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
@@ -35,36 +35,36 @@ class CommandServiceImplTest {
 
     @Test
     void execute_withWrongMapping_returnsCommandNotFoundResponse() {
-        MessageResponse response = commandService.execute("", 123);
+        MessageResponse<?> response = commandService.execute("", 123);
         Assertions.assertTrue(response instanceof CommandNotFoundResponse);
     }
 
     @Test
     void execute_withCorrectMapping_returnsCommandResponse() {
         when(userRoleService.getByUserId(123)).thenReturn(Role.SUPER_ADMIN);
-        MessageResponse response = commandService.execute("/admin", 123);
+        MessageResponse<?> response = commandService.execute("/admin", 123);
         Assertions.assertTrue(response instanceof CommandResponse);
     }
 
     @Test
     void execute_withWeakUserRole_returnsForbiddenCommandResponse() {
         when(userRoleService.getByUserId(123)).thenReturn(Role.USER);
-        MessageResponse response = commandService.execute("/admin", 123);
+        MessageResponse<?> response = commandService.execute("/admin", 123);
         Assertions.assertTrue(response instanceof ForbiddenCommandResponse);
     }
     
     @Test
     void execute_withoutRole_returnsCommandsResponse() {
         when(userRoleService.getByUserId(123)).thenThrow(EntityNotFoundException.class);
-        MessageResponse response = commandService.execute("/user", 123);
+        MessageResponse<?> response = commandService.execute("/user", 123);
         Assertions.assertTrue(response instanceof CommandResponse);
     }
 
     record TestCommand(String mapping, Role role) implements Command {
 
         @Override
-        public CommandResponse execute(CommandData data) {
-            return new CommandResponse(OperationStatus.SUCCESS, "");
+        public CommandResponse<?> execute(CommandData data) {
+            return new CommandResponse<>(OperationStatus.SUCCESS, "");
         }
 
         @Override

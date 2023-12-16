@@ -20,7 +20,7 @@ public class HelpCommand implements Command {
     private String mapping;
 
     @Override
-    public CommandResponse execute(CommandData data) {
+    public CommandResponse<?> execute(CommandData data) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Available commands:\n");
         stringBuilder.append(Strings.repeat("_", 40));
@@ -28,7 +28,7 @@ public class HelpCommand implements Command {
         commandsInfoService.getUserCommandsInfo(data.userId()).forEach(stringBuilder::append);
         stringBuilder.append(Strings.repeat("_", 40));
 
-        return new CommandResponse(OperationStatus.SUCCESS, stringBuilder.toString());
+        return new CommandResponse<>(OperationStatus.SUCCESS, stringBuilder.toString());
     }
 
     @Override

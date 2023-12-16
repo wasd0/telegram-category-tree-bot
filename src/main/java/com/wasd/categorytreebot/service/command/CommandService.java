@@ -1,7 +1,7 @@
 package com.wasd.categorytreebot.service.command;
 
-import com.wasd.categorytreebot.model.message.MessageResponse;
+import com.wasd.categorytreebot.model.response.MessageResponse;
 
 public interface CommandService {
-    MessageResponse execute(String text, long userId);
+    MessageResponse<?> execute(String textCommand, long userId);
 }
