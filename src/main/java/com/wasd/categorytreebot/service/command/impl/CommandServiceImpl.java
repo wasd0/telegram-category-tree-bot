@@ -50,7 +50,7 @@ public class CommandServiceImpl implements CommandService {
             return new CommandNotFoundResponse();
         }
 
-        CommandData commandData = CommandUtils.getCommandData(text);
+        CommandData commandData = CommandUtils.getCommandData(userId, text);
         Command command = commandMap.get(commandData.mapping());
 
         if (command == null) {
@@ -74,8 +74,6 @@ public class CommandServiceImpl implements CommandService {
 
     @PostConstruct
     private void init() {
-        commandInfoService.addCommandsInfo(commandMap.values().stream()
-                .map(command -> String.format("\n%s\n%s\n\n", command.getMapping(), command.getDescription()))
-                .toList());
+        commandInfoService.init(commandMap.values().stream().toList());
     }
 }

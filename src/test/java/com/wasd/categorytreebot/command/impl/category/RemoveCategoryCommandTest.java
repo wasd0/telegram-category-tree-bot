@@ -25,21 +25,21 @@ class RemoveCategoryCommandTest {
     
     @Test 
     void remove_withoutArguments_fail() {
-        CommandResponse response = removeCategoryCommand.execute(new CommandData(""));
+        CommandResponse response = removeCategoryCommand.execute(new CommandData(0 ,""));
         Assertions.assertEquals(response.status(), OperationStatus.FAIL);
     }
     
     @Test
     void remove_withBadArgument_fail() {
         doThrow(EntityNotFoundException.class).when(categoryService).remove("test");
-        CommandResponse response = removeCategoryCommand.execute(new CommandData("", "test"));
+        CommandResponse response = removeCategoryCommand.execute(new CommandData(0, "", "test"));
         Assertions.assertEquals(response.status(), OperationStatus.FAIL);
     }
     
     @Test
     void remove_withCorrectArgument_success() {
         doNothing().when(categoryService).remove("test");
-        CommandResponse response = removeCategoryCommand.execute(new CommandData("", "test"));
+        CommandResponse response = removeCategoryCommand.execute(new CommandData(0, "", "test"));
         Assertions.assertEquals(response.status(), OperationStatus.SUCCESS);
     }
 }

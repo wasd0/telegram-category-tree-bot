@@ -28,14 +28,14 @@ class FindCategoryCommandTest {
     @Test
     void findCategories_categoriesNotExists_fail() {
         when(categoryService.findAllRoots()).thenReturn(new ArrayList<>());
-        CommandResponse response = findCategoryCommand.execute(new CommandData(""));
+        CommandResponse response = findCategoryCommand.execute(new CommandData(0, ""));
         Assertions.assertEquals(response.status(), OperationStatus.FAIL);
     }
     
     @Test
     void findCategories_categoriesNotExists_success() {
         when(categoryService.findAllRoots()).thenReturn(List.of(new CategoryResponse("", "", null)));
-        CommandResponse response = findCategoryCommand.execute(new CommandData(""));
+        CommandResponse response = findCategoryCommand.execute(new CommandData(0, ""));
         Assertions.assertEquals(response.status(), OperationStatus.SUCCESS);
     }
 }

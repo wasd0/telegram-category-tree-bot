@@ -1,9 +1,11 @@
 package com.wasd.categorytreebot.service.command;
 
+import com.wasd.categorytreebot.command.Command;
+
 import java.util.List;
 
 public interface CommandsInfoService {
-    void addCommandsInfo(List<String> mappings);
+    void init(List<Command> commands);
 
-    List<String> getInfo();
+    List<String> getUserCommandsInfo(long userId);
 }
