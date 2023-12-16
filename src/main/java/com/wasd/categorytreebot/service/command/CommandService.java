@@ -1,9 +1,7 @@
 package com.wasd.categorytreebot.service.command;
 
-import com.wasd.categorytreebot.command.Command;
-
-import java.util.Optional;
+import com.wasd.categorytreebot.model.message.MessageResponse;
 
 public interface CommandService {
-    Optional<Command> getByMapping(String mapping);
+    MessageResponse execute(String text, long userId);
 }

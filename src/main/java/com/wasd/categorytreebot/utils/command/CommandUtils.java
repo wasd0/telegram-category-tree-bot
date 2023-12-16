@@ -7,7 +7,7 @@ import java.util.List;
 
 public final class CommandUtils {
     
-    public static CommandData getCommandData(String text) {
+    public static CommandData getCommandData(long userId, String text) {
         List<String> parts = Arrays.stream(text.split(" ")).filter(s -> !s.isBlank()).toList();
         String mapping = parts.get(0);
         String[] arguments = new String[parts.size() - 1];
@@ -16,6 +16,6 @@ public final class CommandUtils {
             arguments[i - 1] = parts.get(i);
         }
         
-        return new CommandData(mapping, arguments);
+        return new CommandData(userId, mapping, arguments);
     }
 }

@@ -27,7 +27,7 @@ class AddCategoryCommandTest {
 
     @Test
     void addRoot_whenCategoryExists_fail() {
-        CommandData data = new CommandData("", "test");
+        CommandData data = new CommandData(0, "", "test");
         when(categoryService.create(any())).thenThrow(EntityExistsException.class);
         CommandResponse response = addCategoryCommand.execute(data);
         Assertions.assertEquals(response.status(), OperationStatus.FAIL);
@@ -35,7 +35,7 @@ class AddCategoryCommandTest {
 
     @Test
     void addRoot_whenNameNotExists_success() {
-        CommandData data = new CommandData("", "test");
+        CommandData data = new CommandData(0, "", "test");
         when(categoryService.create(any())).thenReturn(new CategoryResponse("test", null, null));
         CommandResponse response = addCategoryCommand.execute(data);
         Assertions.assertEquals(response.status(), OperationStatus.SUCCESS);
@@ -43,7 +43,7 @@ class AddCategoryCommandTest {
 
     @Test
     void addChild_whenParentNameIncorrect_fail() {
-        CommandData data = new CommandData("", "test", "parent");
+        CommandData data = new CommandData(0, "", "test", "parent");
         when(categoryService.create(any())).thenThrow(EntityNotFoundException.class);
         CommandResponse response = addCategoryCommand.execute(data);
         Assertions.assertEquals(response.status(), OperationStatus.FAIL);
@@ -51,7 +51,7 @@ class AddCategoryCommandTest {
 
     @Test
     void addChild_whenParentNameCorrect_success() {
-        CommandData data = new CommandData("", "test", "parent");
+        CommandData data = new CommandData(0, "", "test", "parent");
         when(categoryService.create(any())).thenReturn(new CategoryResponse("test", "parent", null));
         CommandResponse response = addCategoryCommand.execute(data);
         Assertions.assertEquals(response.status(), OperationStatus.SUCCESS);
@@ -59,7 +59,7 @@ class AddCategoryCommandTest {
     
     @Test
     void add_withoutArguments_fail() {
-        CommandData data = new CommandData("");
+        CommandData data = new CommandData(0, "");
         CommandResponse response = addCategoryCommand.execute(data);
         Assertions.assertEquals(response.status(), OperationStatus.FAIL);
     }

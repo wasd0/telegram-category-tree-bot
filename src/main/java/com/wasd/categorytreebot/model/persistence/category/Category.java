@@ -1,13 +1,17 @@
 package com.wasd.categorytreebot.model.persistence.category;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = "children")
 @NoArgsConstructor
 @Table(name = "categories")
 public class Category {

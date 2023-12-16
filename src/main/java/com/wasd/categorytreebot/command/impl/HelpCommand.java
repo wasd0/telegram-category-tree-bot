@@ -4,6 +4,7 @@ import com.wasd.categorytreebot.command.Command;
 import com.wasd.categorytreebot.model.command.CommandData;
 import com.wasd.categorytreebot.model.command.CommandResponse;
 import com.wasd.categorytreebot.model.command.OperationStatus;
+import com.wasd.categorytreebot.model.role.Role;
 import com.wasd.categorytreebot.service.command.CommandsInfoService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
@@ -24,7 +25,7 @@ public class HelpCommand implements Command {
         stringBuilder.append("Available commands:\n");
         stringBuilder.append(Strings.repeat("_", 40));
 
-        commandsInfoService.getInfo().forEach(stringBuilder::append);
+        commandsInfoService.getUserCommandsInfo(data.userId()).forEach(stringBuilder::append);
         stringBuilder.append(Strings.repeat("_", 40));
 
         return new CommandResponse(OperationStatus.SUCCESS, stringBuilder.toString());
@@ -38,5 +39,10 @@ public class HelpCommand implements Command {
     @Override
     public String getDescription() {
         return "Show all available commands";
+    }
+
+    @Override
+    public Role getAccessRole() {
+        return Role.USER;
     }
 }
