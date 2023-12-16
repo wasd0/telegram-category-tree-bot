@@ -3,6 +3,8 @@ package com.wasd.categorytreebot.service.command.impl;
 import com.wasd.categorytreebot.command.Command;
 import com.wasd.categorytreebot.model.command.CommandData;
 import com.wasd.categorytreebot.model.command.CommandResponse;
+import com.wasd.categorytreebot.model.message.MessageResponse;
+import com.wasd.categorytreebot.model.message.impl.CommandNotFoundResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +13,6 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class CommandServiceImplTest {
@@ -22,15 +23,15 @@ class CommandServiceImplTest {
     List<Command> commands = List.of(new TestCommand());
     
     @Test
-    void getByMapping_withWrongMapping_returnsEmpty() {
-        Optional<Command> command = commandService.getByMapping("");
-        Assertions.assertTrue(command.isEmpty());
+    void execute_withWrongMapping_returnsCommandNotFoundResponse() {
+        MessageResponse response = commandService.execute("");
+        Assertions.assertTrue(response instanceof CommandNotFoundResponse);
     }
     
     @Test
-    void getByMapping_withCorrectMapping_returnsCommand() {
-        Optional<Command> command = commandService.getByMapping("/test");
-        Assertions.assertTrue(command.isPresent());
+    void getByMapping_withCorrectMapping_returnsMessageResponse() {
+        MessageResponse response = commandService.execute("/test");
+        Assertions.assertFalse(response instanceof CommandNotFoundResponse);
     }
     
     static class TestCommand implements Command {
