@@ -22,18 +22,18 @@ public class FindCategoryCommand implements Command {
 
     @Override
     public CommandResponse<?> execute(CommandData data) {
-        List<CategoryResponse> roots = categoryService.findAllRoots();
+        List<CategoryResponse> categories = categoryService.findAll();
 
-        if (!roots.isEmpty()) {
+        if (!categories.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("Categories:\n");
 
-            for (CategoryResponse root : roots) {
+            for (CategoryResponse category : categories) {
                 stringBuilder.append("\n");
-                stringBuilder.append(root.name());
+                stringBuilder.append(category.name());
 
-                if (root.children() != null && !root.children().isEmpty()) {
-                    for (String child : root.children()) {
+                if (category.children() != null && !category.children().isEmpty()) {
+                    for (String child : category.children()) {
                         stringBuilder.append(String.format(" -> %s ", child));
                     }
                 }

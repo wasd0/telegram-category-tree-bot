@@ -8,7 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 
 public interface CategoryService {
-    List<CategoryResponse> findAllRoots();
+    List<CategoryResponse> findAll();
     CategoryResponse create(CategoryRequest request) throws EntityExistsException, EntityNotFoundException;
     void remove(String name) throws EntityNotFoundException;
 }

@@ -11,10 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,8 +22,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public List<CategoryResponse> findAllRoots() {
-        return categoryRepository.findAllByParentIsNull().stream()
+    public List<CategoryResponse> findAll() {
+        return categoryRepository.findAll().stream()
                 .map(this::mapCategoryToResponse)
                 .collect(Collectors.toList());
     }
@@ -75,15 +73,8 @@ public class CategoryServiceImpl implements CategoryService {
         List<String> children = hasChildren ? new ArrayList<>() : null;
 
         if (hasChildren) {
-            Queue<Category> categoryQueue = new ArrayDeque<>(category.getChildren());
-
-            while (!categoryQueue.isEmpty()) {
-                Category child = categoryQueue.poll();
+            for (Category child : category.getChildren()) {
                 children.add(child.getName());
-
-                if (hasChildren(child)) {
-                    categoryQueue.addAll(child.getChildren());
-                }
             }
         }
 

@@ -5,6 +5,7 @@ import com.wasd.categorytreebot.model.command.CommandData;
 import com.wasd.categorytreebot.model.command.CommandResponse;
 import com.wasd.categorytreebot.model.command.OperationStatus;
 import com.wasd.categorytreebot.model.response.MessageResponse;
+import com.wasd.categorytreebot.model.response.impl.CommandFailResponse;
 import com.wasd.categorytreebot.model.response.impl.CommandNotFoundResponse;
 import com.wasd.categorytreebot.model.response.impl.ForbiddenCommandResponse;
 import com.wasd.categorytreebot.model.role.Role;
@@ -28,8 +29,9 @@ class CommandServiceImplTest {
     @InjectMocks
     CommandServiceImpl commandService;
     @Spy
-    List<Command> commands = List.of(new TestCommand("/admin", Role.ADMIN),
-            new TestCommand("/user", Role.USER));
+    List<Command> commands = List.of(new TestCommand("/admin", Role.ADMIN, OperationStatus.SUCCESS),
+            new TestCommand("/user", Role.USER, OperationStatus.SUCCESS), new TestCommand("/fail",
+                    Role.USER, OperationStatus.FAIL));
     @Mock
     UserRoleServiceImpl userRoleService;
 
@@ -59,12 +61,19 @@ class CommandServiceImplTest {
         MessageResponse<?> response = commandService.execute("/user", 123);
         Assertions.assertTrue(response instanceof CommandResponse);
     }
+    
+    @Test
+    void execute_whenCommandFail_returnsCommandFailResponse() {
+        when(userRoleService.getByUserId(123)).thenReturn(Role.SUPER_ADMIN);
+        MessageResponse<?> response = commandService.execute("/fail", 123);
+        Assertions.assertTrue(response instanceof CommandFailResponse);
+    }
 
-    record TestCommand(String mapping, Role role) implements Command {
+    record TestCommand(String mapping, Role role, OperationStatus status) implements Command {
 
         @Override
         public CommandResponse<?> execute(CommandData data) {
-            return new CommandResponse<>(OperationStatus.SUCCESS, "");
+            return new CommandResponse<>(status, "");
         }
 
         @Override
