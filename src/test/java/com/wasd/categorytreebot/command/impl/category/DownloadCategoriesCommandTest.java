@@ -4,7 +4,6 @@ import com.wasd.categorytreebot.model.category.CategoryResponse;
 import com.wasd.categorytreebot.model.command.CommandData;
 import com.wasd.categorytreebot.model.command.CommandResponse;
 import com.wasd.categorytreebot.model.command.OperationStatus;
-import com.wasd.categorytreebot.service.application.bot.impl.DownloadCategoriesCommand;
 import com.wasd.categorytreebot.service.application.file.impl.XlsxSerializeService;
 import com.wasd.categorytreebot.service.category.CategoryService;
 import org.junit.jupiter.api.BeforeEach;

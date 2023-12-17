@@ -1,4 +1,4 @@
-package com.wasd.categorytreebot.service.application.bot.impl;
+package com.wasd.categorytreebot.command.impl.category;
 
 import com.wasd.categorytreebot.command.Command;
 import com.wasd.categorytreebot.model.category.CategoryResponse;
