@@ -5,7 +5,7 @@ import com.wasd.categorytreebot.model.command.CommandResponse;
 import com.wasd.categorytreebot.model.role.Role;
 
 public interface Command {
-    CommandResponse execute(CommandData data);
+    CommandResponse<?> execute(CommandData data);
     String getMapping();
     String getDescription();
     Role getAccessRole();

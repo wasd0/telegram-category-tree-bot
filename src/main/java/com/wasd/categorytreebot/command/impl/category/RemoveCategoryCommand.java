@@ -20,18 +20,19 @@ public class RemoveCategoryCommand implements Command {
     private String mapping;
 
     @Override
-    public CommandResponse execute(CommandData data) {
+    public CommandResponse<?> execute(CommandData data) {
         if (data.arguments().length == 1) {
             try {
                 String categoryName = data.arguments()[0];
                 categoryService.remove(categoryName);
             } catch (EntityNotFoundException e) {
-                return new CommandResponse(OperationStatus.FAIL, e.getMessage());
+                return new CommandResponse<>(OperationStatus.FAIL, e.getMessage());
             }
-            return new CommandResponse(OperationStatus.SUCCESS, String.format("Category '%s' removed",
+            return new CommandResponse<>(OperationStatus.SUCCESS, String.format("Category '%s' removed",
                     data.arguments()[0]));
         } else {
-            return new CommandResponse(OperationStatus.FAIL, "Category not found. Add category name to command for remove");
+            return new CommandResponse<>(OperationStatus.FAIL, "Category not found. Add category name to " +
+                    "command for remove");
         }
     }
 

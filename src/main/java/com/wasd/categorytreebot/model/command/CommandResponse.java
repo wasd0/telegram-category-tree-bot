@@ -1,11 +1,10 @@
 package com.wasd.categorytreebot.model.command;
 
-import com.wasd.categorytreebot.model.message.MessageResponse;
+import com.wasd.categorytreebot.model.response.MessageResponse;
 
-public record CommandResponse(OperationStatus status, String message) implements MessageResponse {
-    
+public record CommandResponse<T>(OperationStatus status, T response) implements MessageResponse<T> {
     @Override
-    public String getMessage() {
-        return message;
+    public T getResponse() {
+        return response;
     }
 }
