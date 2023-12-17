@@ -1,6 +1,7 @@
 package com.wasd.categorytreebot.service.application.file.impl;
 
 import com.wasd.categorytreebot.service.application.file.ExcelSerializeService;
+import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -37,7 +38,7 @@ public class XlsxSerializeService implements ExcelSerializeService {
     }
 
     @Override
-    public Map<Integer, List<String>> deserialize(String filePath) throws IOException, NullPointerException {
+    public Map<Integer, List<String>> deserialize(String filePath) throws NotOfficeXmlFileException, NullPointerException, IOException {
         Map<Integer, List<String>> content = new HashMap<>();
 
         try (FileInputStream fileInputStream = new FileInputStream(filePath);
