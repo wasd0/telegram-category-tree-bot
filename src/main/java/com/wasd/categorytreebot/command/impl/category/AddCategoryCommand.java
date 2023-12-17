@@ -60,7 +60,7 @@ public class AddCategoryCommand implements Command {
         try {
             CategoryResponse categoryResponse = categoryService.create(new CategoryRequest(name, null));
             return new CommandResponse<>(OperationStatus.SUCCESS, String.format("Added new category '%s'",
-                    categoryResponse.name()));
+                    categoryResponse.getName()));
         } catch (EntityNotFoundException | EntityExistsException e) {
             return new CommandResponse<>(OperationStatus.FAIL, e.getMessage());
         }
@@ -70,7 +70,7 @@ public class AddCategoryCommand implements Command {
         try {
             CategoryResponse categoryResponse = categoryService.create(new CategoryRequest(name, parentName));
             return new CommandResponse<>(OperationStatus.SUCCESS, String.format("Added new category '%s'",
-                    categoryResponse.name()));
+                    categoryResponse.getName()));
         } catch (EntityNotFoundException | EntityExistsException e) {
             return new CommandResponse<>(OperationStatus.FAIL, e.getMessage());
         }

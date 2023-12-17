@@ -8,11 +8,11 @@ import com.wasd.categorytreebot.service.category.CategoryService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,17 +68,33 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private CategoryResponse mapCategoryToResponse(Category category) {
-        String parentName = category.getParent() != null ? category.getParent().getName() : null;
-        boolean hasChildren = hasChildren(category);
-        List<String> children = hasChildren ? new ArrayList<>() : null;
+        ArrayDeque<Pair<Category, CategoryResponse>> deque = new ArrayDeque<>();
+        Map<Category, CategoryResponse> categoryChildren = new HashMap<>();
 
-        if (hasChildren) {
-            for (Category child : category.getChildren()) {
-                children.add(child.getName());
+        CategoryResponse response = new CategoryResponse(category.getName(),
+                category.getParent() != null ? category.getParent().getName() : null, null);
+        
+        deque.push(Pair.of(category, response));
+
+        while (!deque.isEmpty()) {
+            Pair<Category, CategoryResponse> pair = deque.pollLast();
+            Category currentCategory = pair.getFirst();
+            CategoryResponse currentResponse = pair.getSecond();
+
+            categoryChildren.put(currentCategory, currentResponse);
+
+            if (hasChildren(currentCategory)) {
+                List<CategoryResponse> children = new ArrayList<>();
+                for (Category child : currentCategory.getChildren()) {
+                    CategoryResponse childResponse = new CategoryResponse(child.getName(), currentCategory.getName(), null);
+                    children.add(childResponse);
+                    deque.addLast(Pair.of(child, childResponse));
+                }
+                currentResponse.setChildren(children);
             }
         }
 
-        return new CategoryResponse(category.getName(), parentName, children);
+        return categoryChildren.get(category);
     }
 
     private boolean hasChildren(Category category) {

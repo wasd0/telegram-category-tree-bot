@@ -1,6 +1,14 @@
 package com.wasd.categorytreebot.model.category;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.util.List;
 
-public record CategoryResponse(String name, String parentName, List<String> children) {
+@Data
+@AllArgsConstructor
+public class CategoryResponse {
+    private String name;
+    private String parentName;
+    private List<CategoryResponse> children;
 }
