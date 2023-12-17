@@ -34,3 +34,4 @@ build/
 ### Project ###
 /src/main/resources/properties/categoryBot.properties
 /MarketBot
+src/main/resources/dynamic/**
