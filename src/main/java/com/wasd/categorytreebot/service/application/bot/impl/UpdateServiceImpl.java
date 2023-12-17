@@ -26,14 +26,13 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Override
     public void evaluate(Update update) {
-        executeChatAction(update.getMessage().getChatId(), ActionType.TYPING);
-
         if (update.getMessage().hasText() && !update.getMessage().getText().isEmpty()) {
             String text = update.getMessage().getText();
             MessageResponse<?> response = commandService.execute(text, update.getMessage().getFrom().getId());
 
 
             if (response.getResponse() instanceof String textResponse) {
+                executeChatAction(update.getMessage().getChatId(), ActionType.TYPING);
                 MessageResponse<String> messageResponse = () -> textResponse;
                 sendTextResponse(update, messageResponse);
             } else if (response.getResponse() instanceof File file) {
@@ -57,12 +56,14 @@ public class UpdateServiceImpl implements UpdateService {
     private void sendDocumentResponse(Update update, File file) {
         InputFile inputFile = new InputFile(file);
         SendDocument sendDocument = SendMessageUtils.sendMessage(update, inputFile);
-        categoryBot.executeAsync(sendDocument).thenAccept(message -> deleteFile(file));
-    }
 
-    private static void deleteFile(File file) {
-        if (!file.delete()) {
-            file.deleteOnExit();
+        try {
+            categoryBot.execute(sendDocument);
+            if (file.exists() && file.delete()) {
+                sendTextResponse(update, () -> "Successful!");
+            }
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -72,7 +73,7 @@ public class UpdateServiceImpl implements UpdateService {
         sendChatAction.setAction(actionType);
 
         try {
-            categoryBot.execute(sendChatAction);
+            categoryBot.executeAsync(sendChatAction);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }

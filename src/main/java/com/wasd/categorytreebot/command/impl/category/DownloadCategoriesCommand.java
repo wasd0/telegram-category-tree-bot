@@ -55,9 +55,11 @@ public class DownloadCategoriesCommand implements Command {
 
         for (CategoryResponse response : responses) {
             List<String> categories = new ArrayList<>();
-            categories.add(response.name());
-            if (response.children() != null) {
-                categories.addAll(response.children());
+            categories.add(response.getName());
+            if (response.getChildren() != null) {
+                categories.addAll(response.getChildren().stream()
+                        .map(CategoryResponse::getName)
+                        .toList());
             }
             categoryTreeMap.put(row++, categories);
         }
