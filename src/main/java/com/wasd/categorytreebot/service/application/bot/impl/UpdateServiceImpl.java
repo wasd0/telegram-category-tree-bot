@@ -57,7 +57,13 @@ public class UpdateServiceImpl implements UpdateService {
     private void sendDocumentResponse(Update update, File file) {
         InputFile inputFile = new InputFile(file);
         SendDocument sendDocument = SendMessageUtils.sendMessage(update, inputFile);
-        categoryBot.executeAsync(sendDocument);
+        categoryBot.executeAsync(sendDocument).thenAccept(message -> deleteFile(file));
+    }
+
+    private static void deleteFile(File file) {
+        if (!file.delete()) {
+            file.deleteOnExit();
+        }
     }
 
     private void executeChatAction(Long chatId, ActionType actionType) {
