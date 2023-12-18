@@ -4,10 +4,9 @@ import com.wasd.categorytreebot.command.Command;
 import com.wasd.categorytreebot.exception.CommandExistsException;
 import com.wasd.categorytreebot.model.command.CommandData;
 import com.wasd.categorytreebot.model.command.CommandResponse;
-import com.wasd.categorytreebot.model.command.OperationStatus;
 import com.wasd.categorytreebot.model.response.MessageResponse;
-import com.wasd.categorytreebot.model.response.impl.CommandFailResponse;
 import com.wasd.categorytreebot.model.response.impl.CommandNotFoundResponse;
+import com.wasd.categorytreebot.model.response.impl.DefaultCommandFailResponse;
 import com.wasd.categorytreebot.model.response.impl.ForbiddenCommandResponse;
 import com.wasd.categorytreebot.model.role.Role;
 import com.wasd.categorytreebot.service.command.CommandService;
@@ -82,7 +81,18 @@ public class CommandServiceImpl implements CommandService {
 
         CommandResponse<?> response = command.execute(commandData);
         
-        return response.status().equals(OperationStatus.SUCCESS) ? response : new CommandFailResponse();
+        return switch (response.status()) {
+            case SUCCESS -> response;
+            case FAIL -> getFailMessageResponse(response);
+        };
+    }
+    
+    private MessageResponse<?> getFailMessageResponse(CommandResponse<?> response) {
+        if (response.getResponse() != null && response.getResponse() instanceof String) {
+            return response;
+        }
+        
+        return new DefaultCommandFailResponse();
     }
 
     @PostConstruct
