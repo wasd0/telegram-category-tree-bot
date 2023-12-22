@@ -6,7 +6,7 @@
 - [x] Download categories as .xlsx
 - [x] Tests
 - [ ] Upload categories as .xlsx
-- [ ] Docker set up
+- [x] Docker
 
 ## Commands:
  - ``` /help ``` - Show a list of all available commands and a brief description of them.
