@@ -46,7 +46,7 @@ categoryBot.username=SomeUsername
 categoryBot.token=54544455:AAFPFDFD:fggeFSF8fd88fa
 ```
 
-### 3. Launch
+### 3. Launch:
 #### Execute in the console: 
 ``` cd /PATH/TO/category-tree-bot && docker compose up ```  
 
