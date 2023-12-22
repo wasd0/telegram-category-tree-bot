@@ -29,7 +29,7 @@
 </dependency>
 ```
 - Properties
-```
+```yaml
 spring:
   datasource:
     username: postgres
@@ -45,6 +45,10 @@ spring:
 categoryBot.username=SomeUsername
 categoryBot.token=54544455:AAFPFDFD:fggeFSF8fd88fa
 ```
+
+### 3. Launch
+#### Execute in the console: 
+``` cd /PATH/TO/category-tree-bot && docker compose up ```  
 
 ### Contact me: 
 - mail: kirshvedov13@gmail.com
