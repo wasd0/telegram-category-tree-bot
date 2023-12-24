@@ -6,6 +6,10 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public final class SendMessageUtils {
+    private SendMessageUtils() {
+        
+    }
+    
     public static SendMessage sendMessage(Update update, String messageText) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(messageText);

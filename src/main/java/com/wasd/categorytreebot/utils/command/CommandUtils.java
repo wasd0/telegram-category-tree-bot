@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class CommandUtils {
+    private CommandUtils() {
+        
+    }
     
     public static CommandData getCommandData(long userId, String text) {
         List<String> parts = Arrays.stream(text.split(" ")).filter(s -> !s.isBlank()).toList();

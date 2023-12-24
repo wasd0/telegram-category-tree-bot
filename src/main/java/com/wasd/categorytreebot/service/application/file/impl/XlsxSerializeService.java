@@ -65,10 +65,10 @@ public class XlsxSerializeService implements ExcelSerializeService {
     }
 
     private void fillSheetFromContent(Sheet sheet, Map<Integer, List<String>> content) {
-        for (int rowNumber : content.keySet()) {
-            Row sheetRow = sheet.createRow(rowNumber);
+        for (Map.Entry<Integer, List<String>> entry : content.entrySet()) {
+            Row sheetRow = sheet.createRow(entry.getKey());
             int i = 0;
-            for (String cell : content.get(rowNumber)) {
+            for (String cell : entry.getValue()) {
                 Cell rowCell = sheetRow.createCell(i++);
                 rowCell.setCellValue(cell);
             }
